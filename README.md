@@ -22,7 +22,7 @@ A 4-page educational website built for the **Arbitrum Builder Pods** assignment.
 ## Tech Stack
 
 - HTML5 / CSS3 / Vanilla JavaScript
-- Web Crypto API (SHA-256) for the Block Simulator
+- Web Binance API for the Block Simulator
 - Binance public API for live prices
 - Google Fonts (Space Grotesk + Inter)
 
