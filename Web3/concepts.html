@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Concepts – ArbiLearn</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">⬡<span>ArbiLearn</span></div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="concepts.html" class="nav-btn active">Concepts</a>
+    <a href="prices.html" class="nav-btn">Live Prices</a>
+    <a href="simulator.html" class="nav-btn">Block Sim</a>
+  </div>
+</nav>
+
+<div class="concepts-wrap">
+  <div class="section-label" style="text-align:left;margin-bottom:.25rem">Reference Guide</div>
+  <h2 class="page-title">Web3 Core Concepts</h2>
+  <p class="page-sub">Side-by-side comparisons of the fundamental ideas powering the decentralised web</p>
+
+  <div class="concept-block">
+    <h3>🌐 Web2 vs Web3</h3>
+    <div class="vs-grid">
+      <div class="vs-card left purple-top"><h4 class="purple">Web2</h4><ul class="vs-list left-list"><li>Data stored on company servers (Google, Meta, Amazon)</li><li>Accounts owned by platforms — can be banned or deleted</li><li>Revenue captured by intermediaries</li><li>Permissioned: companies decide who can build</li><li>Identity = email + password (company-held)</li></ul></div>
+      <div class="vs-badge">VS</div>
+      <div class="vs-card right blue-top"><h4 class="blue">Web3</h4><ul class="vs-list"><li>Data stored on-chain or on decentralised storage (IPFS)</li><li>Wallet-based identity — only you hold your private key</li><li>Value flows directly between participants</li><li>Permissionless: anyone can build or use without approval</li><li>Identity = cryptographic key pair you control</li></ul></div>
+    </div>
+  </div>
+
+  <div class="concept-block">
+    <h3>⚡ Ethereum vs Bitcoin</h3>
+    <div class="vs-grid">
+      <div class="vs-card left btc-top"><h4 class="btc">Bitcoin</h4><ul class="vs-list left-list"><li>Designed as peer-to-peer digital cash</li><li>Simple scripting language, limited programmability</li><li>Proof of Work consensus (SHA-256 mining)</li><li>~10 minute block times, 7 TPS</li><li>Primary use: store of value, payments</li></ul></div>
+      <div class="vs-badge">VS</div>
+      <div class="vs-card right eth-top"><h4 class="eth">Ethereum</h4><ul class="vs-list"><li>Programmable blockchain — "world computer"</li><li>Turing-complete EVM, runs any smart contract</li><li>Proof of Stake consensus (The Merge, 2022)</li><li>~12 second block times, ~15 TPS (+ L2 scaling)</li><li>Primary use: DeFi, NFTs, DAOs, smart contracts</li></ul></div>
+    </div>
+  </div>
+
+  <div class="concept-block">
+    <h3>🔑 Public Key vs Private Key</h3>
+    <div class="vs-grid">
+      <div class="vs-card left green-top"><h4 class="green">Public Key (Address)</h4><ul class="vs-list left-list"><li>Derived mathematically from your private key</li><li>Share it freely — it's your blockchain "username"</li><li>Used to receive funds and verify signatures</li><li>Example: 0x742d…3A7B (40 hex characters)</li><li>Losing it is not a problem — it's public</li></ul></div>
+      <div class="vs-badge">VS</div>
+      <div class="vs-card right red-top"><h4 class="red">Private Key</h4><ul class="vs-list"><li>A random 256-bit number — your secret password</li><li>Never share it — whoever has it owns your assets</li><li>Used to sign transactions and prove ownership</li><li>Example: 64 random hex characters (256 bits)</li><li>Losing it means permanent loss of funds</li></ul></div>
+    </div>
+  </div>
+
+  <div class="concept-block">
+    <h3>🗄️ Blockchain vs Traditional Database</h3>
+    <div class="vs-grid">
+      <div class="vs-card left muted-top"><h4 class="muted">Traditional Database</h4><ul class="vs-list left-list"><li>Controlled by a single company or admin</li><li>Records can be edited or deleted at any time</li><li>Fast reads/writes — optimised for performance</li><li>Trust the company to be honest and secure</li><li>Single point of failure</li></ul></div>
+      <div class="vs-badge">VS</div>
+      <div class="vs-card right blue-top"><h4 class="blue">Blockchain</h4><ul class="vs-list"><li>Maintained by thousands of independent nodes</li><li>Immutable — past records cannot be changed</li><li>Slower — every node must verify every transaction</li><li>Trustless — math and cryptography replace trust</li><li>No single point of failure — censorship-resistant</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Built by <span class="foot-name">Krupaliba Chudasama Batch: 2026 clg: ldrp</span> · <a href="https://github.com/krupalibachudasama2537-lgtm">GitHub</a></p>
+</footer>
+</body>
+</html>
