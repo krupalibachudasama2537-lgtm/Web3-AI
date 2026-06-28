@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Block Simulator – ArbiLearn</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">⬡<span>ArbiLearn</span></div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="concepts.html" class="nav-btn">Concepts</a>
+    <a href="prices.html" class="nav-btn">Live Prices</a>
+    <a href="simulator.html" class="nav-btn active">Block Sim</a>
+  </div>
+</nav>
+
+<div class="sim-wrap">
+  <div class="section-label" style="text-align:left;margin-bottom:.25rem">Interactive Demo</div>
+  <h2 class="page-title">Block Mining Simulator</h2>
+  <p class="page-sub">Mine Block 1, watch Block 2 inherit its hash. Change Block 1's data — Block 2 instantly breaks. <em>This is immutability.</em></p>
+
+  <div class="blocks-container">
+    <!-- BLOCK 1 -->
+    <div class="sim-block valid" id="sim-block-1">
+      <div class="block-header">
+        <h3>⬡ Block #1</h3>
+        <span class="validity-badge valid" id="badge-1">✓ Valid</span>
+      </div>
+      <div class="block-body">
+        <div class="sim-field">
+          <label>Previous Hash</label>
+          <input type="text" id="prev-hash-1" value="0000000000000000" readonly class="mono"/>
+        </div>
+        <div class="sim-field">
+          <label>Block Data</label>
+          <textarea id="data-1" oninput="onDataChange(1)">Alice sends 5 ETH to Bob</textarea>
+        </div>
+        <div class="nonce-row">
+          <div class="sim-field">
+            <label>Nonce</label>
+            <input type="number" id="nonce-1" value="0" oninput="computeHash(1)"/>
+          </div>
+          <button class="mine-btn" id="mine-btn-1" onclick="mineBlock(1)">⛏ Mine</button>
+        </div>
+        <div class="sim-field">
+          <label>SHA-256 Hash Output</label>
+          <div class="hash-display" id="hash-display-1">—</div>
+        </div>
+        <div class="mining-status" id="mining-status-1"></div>
+      </div>
+    </div>
+
+    <!-- BLOCK 2 -->
+    <div class="sim-block invalid" id="sim-block-2">
+      <div class="block-header">
+        <h3>⬡ Block #2</h3>
+        <span class="validity-badge invalid" id="badge-2">✗ Not mined yet</span>
+      </div>
+      <div class="block-body">
+        <div class="sim-field">
+          <label>Previous Hash (from Block 1)</label>
+          <input type="text" id="prev-hash-2" value="Mine Block 1 first..." readonly class="mono muted-input"/>
+        </div>
+        <div class="sim-field">
+          <label>Block Data</label>
+          <textarea id="data-2" oninput="onDataChange(2)">Bob sends 3 ETH to Carol</textarea>
+        </div>
+        <div class="nonce-row">
+          <div class="sim-field">
+            <label>Nonce</label>
+            <input type="number" id="nonce-2" value="0" oninput="computeHash(2)"/>
+          </div>
+          <button class="mine-btn" id="mine-btn-2" onclick="mineBlock(2)">⛏ Mine</button>
+        </div>
+        <div class="sim-field">
+          <label>SHA-256 Hash Output</label>
+          <div class="hash-display" id="hash-display-2">—</div>
+        </div>
+        <div class="mining-status" id="mining-status-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sim-info">
+    <strong>How it works:</strong> Click ⛏ Mine to find a nonce that makes the hash start with <code>"00"</code> (proof-of-work). Block 2's "Previous Hash" is locked to Block 1's output. If you edit Block 1's data after mining, its hash changes — and Block 2's Previous Hash no longer matches, breaking the chain. This is exactly how real blockchains achieve <strong>immutability</strong>.
+  </div>
+</div>
+
+<footer>
+    <p>Built by <span class="foot-name">Krupaliba Chudasama Batch: 2026 clg: ldrp</span> · <a href="https://github.com/krupalibachudasama2537-lgtm">GitHub</a></p>
+</footer>
+
+<script>
+let block1Mined = false;
+
+async function sha256(message) {
+  const buf = new TextEncoder().encode(message);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function computeHash(blockNum) {
+  const prevHash = document.getElementById('prev-hash-'+blockNum).value;
+  const data = document.getElementById('data-'+blockNum).value;
+  const nonce = document.getElementById('nonce-'+blockNum).value;
+  const hash = await sha256(prevHash + data + nonce);
+
+  const display = document.getElementById('hash-display-'+blockNum);
+  const isValid = hash.startsWith('00');
+  display.textContent = hash;
+  display.className = 'hash-display ' + (isValid ? 'valid-hash' : 'invalid-hash');
+
+  const block = document.getElementById('sim-block-'+blockNum);
+  const badge = document.getElementById('badge-'+blockNum);
+
+  if (isValid) {
+    block.className = 'sim-block valid';
+    badge.className = 'validity-badge valid';
+    badge.textContent = '✓ Block Valid';
+    if (blockNum === 1) {
+      block1Mined = true;
+      const ph2 = document.getElementById('prev-hash-2');
+      ph2.value = hash;
+      ph2.style.color = '#22C55E';
+      computeHash(2);
+    }
+  } else {
+    block.className = 'sim-block invalid';
+    badge.className = 'validity-badge invalid';
+    if (blockNum === 1 && block1Mined) {
+      badge.textContent = '✗ Chain broken!';
+      block1Mined = false;
+      const ph2 = document.getElementById('prev-hash-2');
+      ph2.value = 'Block 1 hash changed — re-mine!';
+      ph2.style.color = '#EF4444';
+      document.getElementById('sim-block-2').className = 'sim-block invalid';
+      document.getElementById('badge-2').className = 'validity-badge invalid';
+      document.getElementById('badge-2').textContent = '✗ Chain broken!';
+      document.getElementById('hash-display-2').textContent = 'Previous hash mismatch — Block 1 was tampered with';
+      document.getElementById('hash-display-2').className = 'hash-display invalid-hash';
+    } else {
+      badge.textContent = '✗ Not valid (needs "00")';
+    }
+  }
+  return hash;
+}
+
+async function onDataChange(blockNum) {
+  if (blockNum === 1) { document.getElementById('nonce-1').value = 0; block1Mined = false; }
+  await computeHash(blockNum);
+}
+
+async function mineBlock(blockNum) {
+  const btn = document.getElementById('mine-btn-'+blockNum);
+  const status = document.getElementById('mining-status-'+blockNum);
+  btn.disabled = true;
+  btn.textContent = 'Mining...';
+  const prevHash = document.getElementById('prev-hash-'+blockNum).value;
+  const data = document.getElementById('data-'+blockNum).value;
+  let nonce = 0;
+  while (nonce < 1000000) {
+    const hash = await sha256(prevHash + data + nonce);
+    if (hash.startsWith('00')) {
+      document.getElementById('nonce-'+blockNum).value = nonce;
+      status.textContent = '✓ Found nonce ' + nonce + ' after ' + nonce + ' attempts';
+      await computeHash(blockNum);
+      break;
+    }
+    nonce++;
+    if (nonce % 200 === 0) {
+      status.textContent = 'Trying nonce ' + nonce + '...';
+      document.getElementById('nonce-'+blockNum).value = nonce;
+      await new Promise(r => setTimeout(r, 0));
+    }
+  }
+  btn.disabled = false;
+  btn.textContent = '⛏ Mine';
+}
+
+computeHash(1);
+</script>
+</body>
+</html>
