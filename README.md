@@ -17,18 +17,18 @@ A 4-page educational website built for the **Arbitrum Builder Pods** assignment.
 2. Open `index.html` in any modern browser
 3. No build step required — pure HTML/CSS/JavaScript
 
-> **Note:** The Live Prices page fetches from `api.coingecko.com` (free, no API key). If rate-limited, wait 60 seconds and click Refresh.
+> **Note:** The Live Prices page fetches from `api.binance.com` (free, no API key). If rate-limited, wait 60 seconds and click Refresh.
 
 ## Tech Stack
 
 - HTML5 / CSS3 / Vanilla JavaScript
 - Web Crypto API (SHA-256) for the Block Simulator
-- CoinGecko public API for live prices
+- Binance public API for live prices
 - Google Fonts (Space Grotesk + Inter)
 
 ## Known Issues / Future Improvements
 
-- CoinGecko free tier has rate limits — a backend proxy would improve reliability
+- Binance free tier has rate limits — a backend proxy would improve reliability
 - The mining simulator uses a "00" prefix difficulty — real Bitcoin uses 19+ leading zeros
 - Could add more coins and a price history chart on the Prices page
 
